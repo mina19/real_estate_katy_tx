@@ -16,6 +16,23 @@ def raw_data(raw_data_filenames: list) -> pd.DataFrame:
     for file in raw_data_filenames:
         df = pd.read_csv(file)
         mask = df["SALE TYPE"] == "PAST SALE"
-        raw_df = pd.concat([raw_df, df[mask]])
+        raw_df = pd.concat([raw_df, df[mask]], ignore_index=True)
 
     return raw_df
+
+
+def prepare_df(df: pd.DataFrame) -> pd.DataFrame:
+    col_names = [column.lower().replace(" ", "_") for column in df.columns]
+    df = df.rename(columns=dict(zip(df.columns, col_names)))
+    df = df.drop(col_names[-10:], axis=1)
+    df = df.drop(["sale_type", "days_on_market", "state_or_province"], axis=1)
+    df = df.rename(
+        columns={
+            "zip_or_postal_code": "zip_code",
+            "$/square_feet": "price_per_square_feet",
+            "hoa/month": "hoa_per_month",
+        }
+    )
+    mask = df["property_type"] == "Single Family Residential"
+    df = df[mask]
+    return df
