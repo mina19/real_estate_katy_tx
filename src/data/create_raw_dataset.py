@@ -30,7 +30,7 @@ def raw_data(raw_data_filenames: list) -> pd.DataFrame:
 def prepare_df(df: pd.DataFrame) -> pd.DataFrame:
     col_names = [column.lower().replace(" ", "_") for column in df.columns]
     df = df.rename(columns=dict(zip(df.columns, col_names)))
-    df = df.drop(col_names[-10:], axis=1)
+    df = df.drop(col_names[-10:-2], axis=1)
     df = df.rename(
         columns={
             "zip_or_postal_code": "zip_code",
