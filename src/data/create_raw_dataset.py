@@ -25,7 +25,6 @@ def prepare_df(df: pd.DataFrame) -> pd.DataFrame:
     col_names = [column.lower().replace(" ", "_") for column in df.columns]
     df = df.rename(columns=dict(zip(df.columns, col_names)))
     df = df.drop(col_names[-10:], axis=1)
-    df = df.drop(["sale_type", "days_on_market", "state_or_province"], axis=1)
     df = df.rename(
         columns={
             "zip_or_postal_code": "zip_code",
@@ -35,4 +34,19 @@ def prepare_df(df: pd.DataFrame) -> pd.DataFrame:
     )
     mask = df["property_type"] == "Single Family Residential"
     df = df[mask]
-    return df
+
+    mask = df["city"] == "Katy"
+    df = df[mask]
+
+    df = df.drop(
+        [
+            "property_type",
+            "city",
+            "sale_type",
+            "days_on_market",
+            "state_or_province",
+            "sold_date",
+        ],
+        axis=1,
+    )
+    return df.reset_index(drop=True)
