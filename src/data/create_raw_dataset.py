@@ -10,7 +10,7 @@ def raw_filenames(rel_dir: str = "../data/raw/*") -> list:
     return raw_data_filenames
 
 
-def raw_data(raw_data_filenames: list) -> list:
+def raw_data(raw_data_filenames: list) -> pd.DataFrame:
     """Returns the raw data in a dataframe"""
     raw_df = pd.DataFrame()
     for file in raw_data_filenames:
